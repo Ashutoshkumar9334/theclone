@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, X, Send, User, Bot } from 'lucide-react';
 import { getStylingAdvice } from '../services/geminiService';
@@ -34,10 +35,10 @@ const AiStylist: React.FC = () => {
 
   return (
     <>
-      {/* Trigger Button */}
+      {/* Trigger Button - MOVED UP to bottom-24 */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-8 right-8 z-40 bg-black text-white p-4 rounded-full shadow-2xl hover:scale-105 transition-transform duration-300 ${isOpen ? 'hidden' : 'flex'} items-center gap-2`}
+        className={`fixed bottom-24 right-6 z-40 bg-black text-white p-4 rounded-full shadow-2xl hover:scale-105 transition-transform duration-300 ${isOpen ? 'hidden' : 'flex'} items-center gap-2 border-2 border-white/10`}
       >
         <Sparkles size={20} className="text-yellow-200" />
         <span className="font-medium text-sm hidden md:block">AI Stylist</span>
@@ -45,7 +46,7 @@ const AiStylist: React.FC = () => {
 
       {/* Chat Window */}
       <div 
-        className={`fixed bottom-8 right-4 md:right-8 w-[90vw] md:w-96 bg-white rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col transition-all duration-300 origin-bottom-right ${
+        className={`fixed bottom-24 right-4 md:right-8 w-[90vw] md:w-96 bg-white rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col transition-all duration-300 origin-bottom-right ${
           isOpen ? 'scale-100 opacity-100 h-[500px]' : 'scale-90 opacity-0 h-0 pointer-events-none'
         }`}
       >

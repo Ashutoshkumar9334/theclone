@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ChevronRight, Eye } from 'lucide-react';
 import { Product } from '../types';
@@ -24,52 +25,53 @@ const DealSection: React.FC<DealSectionProps> = ({ dealProducts, latestProducts,
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       
-      {/* Sidebar - Deal of the Day */}
-      <div className="w-full lg:w-[280px] shrink-0">
-        <div className="bg-[#f0f8ff] border border-blue-100 rounded-md p-6 flex flex-col items-center text-center h-full shadow-sm">
+      {/* Sidebar - Deal of the Day - Responsive Centering */}
+      <div className="w-full lg:w-[300px] shrink-0">
+        <div className="bg-[#f0f8ff] border border-blue-100 rounded-lg p-6 md:p-8 flex flex-col items-center text-center h-full shadow-sm">
           
-          <h3 className="text-[#990000] font-bold text-base tracking-wide mb-6 uppercase">
+          <h3 className="text-primary font-bold text-sm md:text-base tracking-widest mb-6 md:mb-8 uppercase">
             DEAL OF THE DAY
           </h3>
 
-          <div className="bg-white p-2 w-full rounded-sm shadow-sm mb-4 border border-gray-100">
+          <div className="bg-white p-2 w-full max-w-[240px] md:max-w-full rounded-md shadow-sm mb-6 border border-gray-100 overflow-hidden">
              <div 
-               className="w-full aspect-square bg-gray-50 cursor-pointer relative group overflow-hidden"
+               className="w-full aspect-square bg-white cursor-pointer relative group overflow-hidden flex items-center justify-center"
                onClick={() => onProductClick(activeDeal)}
              >
                 <img 
                   src={activeDeal.image} 
                   alt={activeDeal.name} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
                   key={activeDeal.id}
                 />
              </div>
           </div>
 
           <h4 
-            className="text-[15px] font-medium text-gray-800 mb-3 line-clamp-3 leading-snug px-1" 
+            className="text-sm md:text-[15px] font-medium text-gray-800 mb-4 line-clamp-2 leading-snug px-2" 
             title={activeDeal.name}
           >
             {activeDeal.name}
           </h4>
 
-          <div className="text-xl font-bold text-[#1e293b] mb-5">
+          <div className="text-xl md:text-2xl font-bold text-gray-900 mb-6">
             ₹{(activeDeal.price * 83).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
 
           <button 
              onClick={() => onProductClick(activeDeal)}
-             className="bg-[#990000] text-white font-bold py-2.5 px-8 rounded-md text-sm uppercase hover:bg-red-800 transition-colors shadow-sm mb-4 w-auto"
+             className="bg-primary text-white font-bold py-3 px-10 rounded-full text-sm uppercase hover:bg-red-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-95 w-max"
           >
             Buy Now
           </button>
           
-          {/* Dots for carousel */}
-          <div className="flex justify-center gap-1.5 mt-auto pt-2">
+          {/* Enhanced Dots for better touch targets */}
+          <div className="flex justify-center gap-2 mt-8 md:mt-auto pt-4">
             {dealProducts.map((_, idx) => (
-              <div 
+              <button 
                 key={idx} 
-                className={`w-2 h-2 rounded-full transition-colors ${idx === currentDealIndex ? 'bg-[#990000]' : 'bg-gray-300'}`}
+                onClick={() => setCurrentDealIndex(idx)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === currentDealIndex ? 'bg-primary w-6' : 'bg-gray-300 hover:bg-gray-400'}`}
               />
             ))}
           </div>
@@ -77,68 +79,68 @@ const DealSection: React.FC<DealSectionProps> = ({ dealProducts, latestProducts,
         </div>
       </div>
 
-      {/* Main Content - Latest Products Grid */}
+      {/* Main Content - Latest Products Responsive Grid */}
       <div className="flex-1">
         
-        {/* Header */}
-        <div className="flex justify-between items-center mb-5 pb-1">
-           <h2 className="text-xl font-bold text-[#1e293b]">Latest Products</h2>
+        {/* Header - Centered on mobile */}
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+           <h2 className="text-xl md:text-2xl font-bold text-gray-900">Latest Products</h2>
            <button 
              onClick={onViewAll}
-             className="text-[#990000] text-sm font-medium flex items-center gap-1 hover:text-red-800 transition-colors"
+             className="text-primary text-sm font-semibold flex items-center gap-1 hover:text-red-800 transition-colors bg-white px-4 py-2 rounded-full border border-gray-100 shadow-sm sm:shadow-none sm:border-0 sm:px-0 sm:py-0"
            >
-             View All <ChevronRight size={16} />
+             View All <ChevronRight size={18} />
            </button>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+        {/* Improved Grid for all sizes */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
            {latestProducts.map((product) => (
              <div 
                key={product.id} 
-               className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer flex flex-col relative h-full"
+               className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col relative h-full"
                onClick={() => onProductClick(product)}
              >
-               {/* Image Container */}
-               <div className="relative aspect-square bg-white border-b border-gray-100">
+               {/* Image Container - Proper padding and fit */}
+               <div className="relative aspect-square bg-white border-b border-gray-50 p-4 flex items-center justify-center">
                   <img 
                     src={product.image} 
                     alt={product.name} 
-                    className="w-full h-full object-cover" 
+                    className="max-w-full max-h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500" 
                   />
                   
-                  {/* Custom Design Overlay */}
+                  {/* Custom Design Overlay - Improved visibility */}
                   {product.brand === 'Custom Design' && (
-                     <div className="absolute inset-0 bg-black/90 flex flex-col items-center justify-center p-2 text-center z-10">
-                        <span className="text-white text-xl font-bold leading-tight tracking-wide">Custom<br/>Design</span>
+                     <div className="absolute inset-0 bg-black/80 backdrop-blur-[2px] flex flex-col items-center justify-center p-4 text-center z-10">
+                        <span className="text-white text-lg md:text-xl font-black leading-tight tracking-wider uppercase">Custom<br/>Design</span>
                      </div>
                   )}
 
-                  {/* Out Of Stock Bar */}
+                  {/* Out Of Stock Bar - Better prominence */}
                   {product.inStock === false && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-black text-white text-[10px] py-1.5 text-center font-normal uppercase tracking-wider z-20">
+                    <div className="absolute bottom-0 left-0 right-0 bg-black text-white text-[10px] md:text-xs py-2 text-center font-bold uppercase tracking-widest z-20">
                       Out Of Stock
                     </div>
                   )}
                   
-                  {/* Hover Eye */}
+                  {/* Hover Eye - Larger for mobile visibility if touched */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-30 pointer-events-none">
-                      <div className="bg-white p-2.5 rounded-full shadow-md text-[#990000] transform scale-0 group-hover:scale-100 transition-transform duration-200">
-                        <Eye size={20} />
+                      <div className="bg-white/90 p-3 rounded-full shadow-xl text-primary transform scale-0 group-hover:scale-100 transition-transform duration-300 backdrop-blur-sm">
+                        <Eye size={24} />
                       </div>
                   </div>
                </div>
 
-               {/* Info Section */}
-               <div className="p-3 text-center flex flex-col flex-1 justify-between">
+               {/* Info Section - Balanced spacing */}
+               <div className="p-4 text-center flex flex-col flex-1 justify-between gap-2">
                  <h3 
-                   className="text-[13px] font-normal text-gray-700 mb-2 line-clamp-2 leading-tight min-h-[32px]" 
+                   className="text-sm font-medium text-gray-700 line-clamp-2 leading-tight min-h-[40px] group-hover:text-primary transition-colors" 
                    title={product.name}
                  >
                    {product.name}
                  </h3>
                  
-                 <div className="font-bold text-[#1e3a8a] text-[15px]">
+                 <div className="font-bold text-gray-900 text-base md:text-lg">
                    ₹{(product.price * 83).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                  </div>
                </div>

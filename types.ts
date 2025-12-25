@@ -1,3 +1,4 @@
+
 export interface Product {
   id: string;
   name: string;
@@ -21,6 +22,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  role?: 'user' | 'vendor' | 'zomato_partner';
 }
 
 export enum PageView {
@@ -33,5 +35,6 @@ export enum PageView {
   SELL_WITH_FABRIMA = 'SELL_WITH_FABRIMA',
   VENDOR_LOGIN = 'VENDOR_LOGIN',
   USER_LOGIN = 'USER_LOGIN',
-  SIGN_UP = 'SIGN_UP'
+  SIGN_UP = 'SIGN_UP',
+  ZOMATO_PARTNER = 'ZOMATO_PARTNER'
 }

@@ -9,10 +9,10 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="bg-[#1f2937] text-white pt-16 relative font-sans text-sm border-t border-gray-700">
-      {/* Scroll to Top Button */}
+      {/* Scroll to Top Button - MOVED UP to bottom-40 */}
       <button 
         onClick={scrollToTop}
-        className="fixed bottom-24 right-8 z-40 bg-[#990000] p-2.5 rounded shadow-lg hover:bg-red-800 transition-colors hidden md:flex items-center justify-center"
+        className="fixed bottom-40 right-6 z-40 bg-[#990000] p-2.5 rounded shadow-lg hover:bg-red-800 transition-colors hidden md:flex items-center justify-center border-2 border-white/10"
         aria-label="Scroll to top"
       >
         <ChevronUp size={24} className="text-white" />

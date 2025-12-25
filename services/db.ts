@@ -1,64 +1,69 @@
 
 import { Product, User } from '../types';
 
-// Mocking MongoDB-like asynchronous behavior
-class StorageDB {
-  private PRODUCTS_KEY = 'fabrima_products';
-  private USERS_KEY = 'fabrima_users';
-  private VENDORS_KEY = 'fabrima_vendors';
-  private PARTNERS_KEY = 'fabrima_partners';
+// High-fidelity MongoDB simulation for static environments
+class MongoMock {
+  private storageKey = 'fabrima_db_';
 
-  constructor() {
-    this.init();
+  private async delay(ms: number = 500) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  private init() {
-    if (!localStorage.getItem(this.PRODUCTS_KEY)) {
-      localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify([]));
-    }
-  }
+  // Collection-based pattern simulation
+  collection(name: string) {
+    const key = this.storageKey + name;
+    
+    const getDocs = (): any[] => {
+      const data = localStorage.getItem(key);
+      return data ? JSON.parse(data) : [];
+    };
 
-  // Simulate MongoDB Find
-  async getUsers(): Promise<User[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const data = localStorage.getItem(this.USERS_KEY);
-        resolve(data ? JSON.parse(data) : []);
-      }, 300);
-    });
-  }
+    const saveDocs = (docs: any[]) => {
+      localStorage.setItem(key, JSON.stringify(docs));
+    };
 
-  // Simulate MongoDB InsertOne
-  async saveUser(user: Partial<User>): Promise<boolean> {
-    return new Promise(async (resolve) => {
-      const users = await this.getUsers();
-      users.push({ ...user, id: Math.random().toString(36).substr(2, 9) } as User);
-      localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
-      setTimeout(() => resolve(true), 500);
-    });
-  }
-
-  // Partner specific queries
-  async getPartnerStats(): Promise<{ partners: number; sla: string; dispatch: string }> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          partners: 184,
-          sla: "99.8%",
-          dispatch: "24h"
+    return {
+      find: async (query: any = {}) => {
+        await this.delay(300);
+        const docs = getDocs();
+        // Simple filter simulation
+        return docs.filter(doc => {
+          return Object.entries(query).every(([k, v]) => doc[k] === v);
         });
-      }, 400);
-    });
+      },
+      
+      insertOne: async (doc: any) => {
+        await this.delay(600);
+        const docs = getDocs();
+        const newDoc = { ...doc, _id: Math.random().toString(36).substr(2, 9), createdAt: new Date() };
+        docs.push(newDoc);
+        saveDocs(docs);
+        return { insertedId: newDoc._id };
+      },
+
+      countDocuments: async () => {
+        await this.delay(200);
+        return getDocs().length;
+      }
+    };
+  }
+
+  // Specialized Enterprise Stats API
+  async getPartnerStats() {
+    await this.delay(400);
+    return {
+      partners: 184,
+      sla: "99.8%",
+      dispatch: "24h",
+      activeLoad: "84%"
+    };
   }
 
   async verifyPartnerID(partnerId: string): Promise<boolean> {
-    // Simulation of ID check against a MongoDB collection
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(partnerId.startsWith('ZM-'));
-      }, 800);
-    });
+    await this.delay(800);
+    // Simulation logic: IDs must follow enterprise naming convention
+    return partnerId.toUpperCase().startsWith('ZM-');
   }
 }
 
-export const db = new StorageDB();
+export const db = new MongoMock();
